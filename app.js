@@ -20,8 +20,18 @@ app.use(express.json())
 // app.use(cors()) // Enable CORS for all routes
 
 app.get('/pdf', (req, res) => {
-    res.setHeader('Content-Type', 'application/pdf')
-    res.setHeader('Content-Disposition', 'inline; filename="document.pdf"')
+    const { contentType, contentDisposition } = req.query
+
+    // Conditionally set headers based on query parameters
+    if (contentType === 'true') {
+        res.setHeader('Content-Type', 'application/pdf')
+    }
+
+    if (contentDisposition === 'true') {
+        res.setHeader('Content-Disposition', 'inline; filename="document.pdf"')
+    }
+
+    // Serve PDF file
     res.sendFile(PDF_FILE_PATH)
 });
 
